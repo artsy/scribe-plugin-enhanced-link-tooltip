@@ -2,7 +2,6 @@
 
 A [Scribe](https://github.com/guardian/scribe) plugin for doing a Medium/Google Docs style tooltip UI instead of a prompt for inserting links.
 Inspired by [artsy/scribe-plugin-link-tooltip](https://github.com/artsy/scribe-plugin-link-tooltip), but with a few modifications, namely:
-* no jQuery dependency
 * custom template (think of l10n)
 * custom namespace for CSS classes and events
 * pluggable link sanitizer
