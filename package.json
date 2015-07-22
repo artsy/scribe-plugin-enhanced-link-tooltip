@@ -2,7 +2,6 @@
   "name": "scribe-plugin-enhanced-link-tooltip",
   "version": "0.0.5",
   "description": "A Scribe plugin for doing a Medium/Google Docs style tooltip UI instead of a prompt for inserting links.",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,7 +16,7 @@
     "tooltip",
     "medium"
   ],
-  "author": "Jory Stiefe",
+  "author": "Jory Stiefel",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jorystiefel/scribe-plugin-enhanced-link-tooltip/issues"
