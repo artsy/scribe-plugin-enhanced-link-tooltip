@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    var scribePluginLinkTooltip = function (options) {
+    var scribePluginLinkTooltip = function () {
 
         // http://stackoverflow.com/a/25206094/1317451
         function findClosestParent (startElement, fn) {
@@ -21,14 +21,23 @@
                 isEditState = false,
 
             // setup UI DOM
-                namespace = options.namespace || 'scribe-plugin-link-tooltip',
+                namespace = 'scribe-plugin-link-tooltip',
                 tooltipNode = (function () {
                     var newTooltip = document.createElement('form'),
                         parentElement = scribe.el.parentNode;
                     newTooltip.className = namespace + ' ' + namespace + '-hidden';
                     newTooltip.style.position = 'absolute';
 
-                    newTooltip.innerHTML = options.innerMarkup;
+                    newTooltip.innerHTML = '<a data-scribe-plugin-link-tooltip-role="link"' +
+                      'class="scribe-plugin-link-tooltip-show-on-view"></a>' +
+                      '<input data-scribe-plugin-link-tooltip-role="input"' +
+                      'class="scribe-plugin-link-tooltip-show-on-edit" placeholder="Paste or type a link"/>' +
+                      '<button data-scribe-plugin-link-tooltip-role="submit" type="submit"' +
+                      'class="scribe-plugin-link-tooltip-show-on-edit">Apply</button>' +
+                      '<button data-scribe-plugin-link-tooltip-role="edit" type="button"' +
+                      'class="scribe-plugin-link-tooltip-show-on-view">Change</button>' +
+                      '<button data-scribe-plugin-link-tooltip-role="remove" type="button"' +
+                      'class="scribe-plugin-link-tooltip-show-on-view">Remove</button>';
 
                     if (getComputedStyle(parentElement).position === 'static') {
                         parentElement.style.position = 'relative';
@@ -47,7 +56,7 @@
                     removeBtn: tooltipNode.querySelector('[data-' + namespace + '-role=remove]')
                 },
 
-                linkSanitizer = options.linkSanitizer || function (str) {
+                linkSanitizer = function (str) {
                         return str;
                     },
 
@@ -75,6 +84,7 @@
                 },
 
                 showTooltip = function (state, selection, node, val, submitCallback) {
+                                                        
                     var teardown = function () {
                             isEditState = false;
                             tooltipNode.classList.add(namespace + '-hidden');
@@ -156,7 +166,7 @@
                                 top = selectionRects.length ? selectionRects[selectionRects.length - 1].bottom : 0,
                                 tooltipWidth = parseFloat(getComputedStyle(tooltipNode).width),
                                 offsetLeft = left - scribeParentRect.left - tooltipWidth / 2;
-
+                          
                             // set position
                             tooltipNode.style.top = top - scribeParentRect.top + 'px';
                             tooltipNode.style.left = offsetLeft + 'px';
@@ -187,6 +197,7 @@
                 },
 
                 executeCommand = function () {
+                  
                     var selection = new scribe.api.Selection(),
                         node = selectAnchorContent(selection),
                         content = node && node.getAttribute('href') || ''; // ! not node.href as that would be expanded
@@ -209,9 +220,10 @@
             // Show the tooltip when a link has focus. When submitting change the link.
             // todo hide on esc key (bonus: also when in view state, until link regains focus)
                 queryState = function () {
-                    var selection = new scribe.api.Selection();
+
+                  var selection = new scribe.api.Selection();
                     return isEditState || selection.getContaining(function (node) {
-                            if (node.nodeName === 'A' && !isEditState) {
+                            if (node.nodeName === 'A' && !isEditState && $(node).parents('.edit-section-text-editable').length > 0 ) {
                                 showTooltip('view', selection, node,
                                     node.getAttribute('href'), // ! not node.href as that would be expanded
                                     function (newHref) {
@@ -228,7 +240,7 @@
 
             // bind and register
             var linkTooltipCommand = new scribe.api.Command('createLink');
-            scribe.commands.linkTooltip = linkTooltipCommand;
+            scribe.commands.linkPrompt = linkTooltipCommand;
 
             linkTooltipCommand.queryState = queryState;
             linkTooltipCommand.execute = executeCommand.bind(linkTooltipCommand);
@@ -240,14 +252,10 @@
         };
     };
 
-    // Module system magic dance
-    if (typeof module !== 'undefined') {
-        module.exports = scribePluginLinkTooltip;
-    } else if (typeof define === 'function' && typeof define.amd === 'object') {
-        define(function () {
-            return scribePluginLinkTooltip;
-        });
+    // Export for CommonJS & window global. TODO: AMD
+    if (typeof module != 'undefined') {
+      module.exports = scribePluginLinkTooltip;
     } else {
-        window.scribePluginLinkTooltip = scribePluginLinkTooltip;
+      window.scribePluginLinkTooltip = scribePluginLinkTooltip;
     }
 })();
