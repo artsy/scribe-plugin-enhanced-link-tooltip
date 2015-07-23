@@ -6,16 +6,6 @@
     'use strict';
 
     var scribePluginLinkTooltip = function () {
-
-        // http://stackoverflow.com/a/25206094/1317451
-        function findClosestParent (startElement, fn) {
-            var parent = startElement.parentElement;
-            if (!parent) {
-                return undefined;
-            }
-            return fn(parent) ? parent : findClosestParent(parent, fn);
-        }
-
         return function (scribe) {
             var nodeName = 'A',
                 isEditState = false,
@@ -109,17 +99,11 @@
                         },
                         onBlur = function (e) {
                             var isSameNode = e.target === node,
-                                selfOrParentAnchor = e.target.nodeName === nodeName ?
-                                    e.target :
-                                    findClosestParent(e.target, function (el) {
-                                        return el.nodeName === nodeName;
-                                    }),
+                                selfOrParentAnchor = $(e.target).closest('a').get(0), // get(0) to get DOM node
                                 isEditableLink = selfOrParentAnchor && selfOrParentAnchor.isContentEditable;
 
-                            var isTooltipUiElement = findClosestParent(e.target, function (el) {
-                                return el === tooltipNode;
-                            });
-
+                            var isTooltipUiElement   = !! $(tooltipNode).has($(e.target)).length > 0;
+                                                                         
                             if (isSameNode || isTooltipUiElement) {
                                 return true; // let blur event pass through
                             }
