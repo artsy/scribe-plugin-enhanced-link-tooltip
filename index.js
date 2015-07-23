@@ -98,7 +98,7 @@
                         },
                         onBlur = function (e) {
                             var isSameNode = e.target === node,
-                                selfOrParentAnchor = $(e.target).closest('a').get(0), // get(0) to get DOM node
+                                selfOrParentAnchor = $(e.target).closest(nodeName).get(0), // get(0) to get DOM node
                                 isEditableLink = selfOrParentAnchor && selfOrParentAnchor.isContentEditable;
 
                             var isTooltipUiElement   = !! $(tooltipNode).has($(e.target)).length > 0;
