@@ -1,7 +1,6 @@
-/*eslint-env browser */ /* global module, define */
-
 // Google Docs inspired link editing inside tooltip
 // Based upon tooltip plugin by Artsy.net (https://github.com/artsy/scribe-plugin-link-tooltip)
+// and fork by ePages (https://github.com/ePages-de/scribe-plugin-enhanced-link-tooltip)
 (function () {
     'use strict';
 
