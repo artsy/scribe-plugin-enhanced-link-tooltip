@@ -19,7 +19,7 @@
                     newTooltip.style.position = 'absolute';
 
                     newTooltip.innerHTML = '<a data-scribe-plugin-link-tooltip-role="link"' +
-                      'class="scribe-plugin-link-tooltip-show-on-view"></a>' +
+                      'class="scribe-plugin-link-tooltip-show-on-view" target="_new"></a>' +
                       '<input data-scribe-plugin-link-tooltip-role="input"' +
                       'class="scribe-plugin-link-tooltip-show-on-edit" placeholder="Paste or type a link"/>' +
                       '<button data-scribe-plugin-link-tooltip-role="submit" type="submit"' +
