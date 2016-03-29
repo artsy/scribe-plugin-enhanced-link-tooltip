@@ -73,7 +73,6 @@
                 },
 
                 showTooltip = function (state, selection, node, val, submitCallback) {
-                                                        
                     var teardown = function () {
                             isEditState = false;
                             tooltipNode.classList.add(namespace + '-hidden');
@@ -102,7 +101,6 @@
                                 isEditableLink = selfOrParentAnchor && selfOrParentAnchor.isContentEditable;
 
                             var isTooltipUiElement   = !! $(tooltipNode).has($(e.target)).length > 0;
-                                                                         
                             if (isSameNode || isTooltipUiElement) {
                                 return true; // let blur event pass through
                             }
@@ -149,7 +147,6 @@
                                 top = selectionRects.length ? selectionRects[selectionRects.length - 1].bottom : 0,
                                 tooltipWidth = parseFloat(getComputedStyle(tooltipNode).width),
                                 offsetLeft = left - scribeParentRect.left - tooltipWidth / 2;
-                          
                             // set position
                             tooltipNode.style.top = top - scribeParentRect.top + 'px';
                             tooltipNode.style.left = offsetLeft + 'px';
@@ -180,11 +177,12 @@
                 },
 
                 executeCommand = function () {
-                  
                     var selection = new scribe.api.Selection(),
                         node = selectAnchorContent(selection),
                         content = node && node.getAttribute('href') || ''; // ! not node.href as that would be expanded
-
+                    if($(node).hasClass('is-jump-link')){
+                      return
+                    }
                     showTooltip('edit', selection, node, content, function (newHref) {
                         getSelection().removeAllRanges();
                         getSelection().addRange(selection.range);
@@ -206,7 +204,7 @@
 
                   var selection = new scribe.api.Selection();
                     return isEditState || selection.getContaining(function (node) {
-                            if (node.nodeName === 'A' && !isEditState && $(node).parents('.edit-section-text-editable').length > 0 ) {
+                            if (node.nodeName === 'A' && !isEditState && $(node).parents('.edit-section-text-editable').length > 0 && !$(node).hasClass('is-jump-link')) {
                                 showTooltip('view', selection, node,
                                     node.getAttribute('href'), // ! not node.href as that would be expanded
                                     function (newHref) {
