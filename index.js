@@ -180,7 +180,7 @@
                     var selection = new scribe.api.Selection(),
                         node = selectAnchorContent(selection),
                         content = node && node.getAttribute('href') || ''; // ! not node.href as that would be expanded
-                    if($(node).hasClass('is-jump-link')){
+                    if($(node).hasClass('is-jump-link') || $(node).hasClass('is-follow-link')){
                       return
                     }
                     showTooltip('edit', selection, node, content, function (newHref) {
@@ -204,7 +204,7 @@
 
                   var selection = new scribe.api.Selection();
                     return isEditState || selection.getContaining(function (node) {
-                            if (node.nodeName === 'A' && !isEditState && $(node).parents('.edit-section-text-editable').length > 0 && !$(node).hasClass('is-jump-link')) {
+                            if (node.nodeName === 'A' && !isEditState && $(node).parents('.edit-section-text-editable').length > 0 && !$(node).hasClass('is-jump-link') && !$(node).hasClass('is-follow-link') && !$(node).hasClass('artist-follow')) {
                                 showTooltip('view', selection, node,
                                     node.getAttribute('href'), // ! not node.href as that would be expanded
                                     function (newHref) {
