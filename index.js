@@ -173,7 +173,7 @@
                     // by the click event leading us here bubbling up.
                     setTimeout(function () {
                         document.addEventListener('click', onBlur);
-                    }, 0);
+                    }, 300);
                 },
 
                 executeCommand = function () {
